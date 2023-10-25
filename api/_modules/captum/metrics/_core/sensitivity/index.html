@@ -6,7 +6,7 @@
 
               ga('create', 'UA-44373548-48', 'auto');
               ga('send', 'pageview');
-            </script><link rel="stylesheet" href="/css/code_block_buttons.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+            </script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
         document.addEventListener('DOMContentLoaded', function() {
           addBackToTop(
             {"zIndex":100}
@@ -14,18 +14,17 @@
         });
         </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/captum_logo.svg" alt="Captum"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/introduction" target="_self">Docs</a></li><li class=""><a href="/tutorials/" target="_self">Tutorials</a></li><li class=""><a href="/api/" target="_self">API Reference</a></li><li class=""><a href="https://github.com/pytorch/captum" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div>
 <script type="text/javascript" id="documentation_options" data-url_root="./"
-src="/js/documentation_options.js"></script>
-<script type="text/javascript" src="/js/jquery.js"></script>
-<script type="text/javascript" src="/js/underscore.js"></script>
-<script type="text/javascript" src="/js/doctools.js"></script>
-<script type="text/javascript" src="/js/language_data.js"></script>
-<script type="text/javascript" src="/js/searchtools.js"></script>
+src="/_sphinx/documentation_options.js"></script>
+<script type="text/javascript" src="/_sphinx/jquery.js"></script>
+<script type="text/javascript" src="/_sphinx/underscore.js"></script>
+<script type="text/javascript" src="/_sphinx/doctools.js"></script>
+<script type="text/javascript" src="/_sphinx/language_data.js"></script>
+<script type="text/javascript" src="/_sphinx/searchtools.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js"></script>
-<script src="/js/katex_autorenderer.js"></script>
+<script src="/_sphinx/katex_autorenderer.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css" />
-<link rel="stylesheet" type="text/css" href="/css/katex-math.css" />
 <div class="sphinx wrapper"><div class="document">
 <div class="documentwrapper">
 <div class="bodywrapper">
@@ -35,7 +34,7 @@ src="/js/documentation_options.js"></script>
 
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">signature</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">cast</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">captum._utils.common</span> <span class="kn">import</span> <span class="p">(</span>
@@ -43,7 +42,6 @@ src="/js/documentation_options.js"></script>
     <span class="n">_expand_and_update_baselines</span><span class="p">,</span>
     <span class="n">_expand_and_update_target</span><span class="p">,</span>
     <span class="n">_format_baseline</span><span class="p">,</span>
-    <span class="n">_format_input</span><span class="p">,</span>
     <span class="n">_format_tensor_into_tuples</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">captum._utils.typing</span> <span class="kn">import</span> <span class="n">TensorOrTupleOfTensorsGeneric</span>
@@ -55,7 +53,7 @@ src="/js/documentation_options.js"></script>
 <span class="k">def</span> <span class="nf">default_perturb_func</span><span class="p">(</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">,</span> <span class="n">perturb_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-    <span class="sa">r</span><span class="sd">"""A default function for generating perturbations of `inputs`</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""A default function for generating perturbations of `inputs`</span>
 <span class="sd">    within perturbation radius of `perturb_radius`.</span>
 <span class="sd">    This function samples uniformly random from the L_Infinity ball</span>
 <span class="sd">    with `perturb_radius` radius.</span>
@@ -64,8 +62,8 @@ src="/js/documentation_options.js"></script>
 
 <span class="sd">    Args:</span>
 
-<span class="sd">        inputs (tensor or a tuple of tensors): The input tensors that we'd</span>
-<span class="sd">                like to perturb by adding a random noise sampled unifromly</span>
+<span class="sd">        inputs (Tensor or tuple[Tensor, ...]): The input tensors that we'd</span>
+<span class="sd">                like to perturb by adding a random noise sampled uniformly</span>
 <span class="sd">                random from an L_infinity ball with a radius `perturb_radius`.</span>
 
 <span class="sd">        radius (float): A radius used for sampling from</span>
@@ -73,13 +71,13 @@ src="/js/documentation_options.js"></script>
 
 <span class="sd">    Returns:</span>
 
-<span class="sd">        perturbed_input (tuple(tensor)): A list of perturbed inputs that</span>
-<span class="sd">                are createed by adding noise sampled uniformly random</span>
+<span class="sd">        perturbed_input (tuple[Tensor, ...]): A list of perturbed inputs that</span>
+<span class="sd">                are created by adding noise sampled uniformly random</span>
 <span class="sd">                from L_infiniy ball with a radius `perturb_radius` to the</span>
 <span class="sd">                original inputs.</span>
 
 <span class="sd">    """</span>
-    <span class="n">inputs</span> <span class="o">=</span> <span class="n">_format_input</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">_format_tensor_into_tuples</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
     <span class="n">perturbed_input</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
         <span class="nb">input</span>
         <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>  <span class="c1"># type: ignore</span>
@@ -90,7 +88,9 @@ src="/js/documentation_options.js"></script>
     <span class="k">return</span> <span class="n">perturbed_input</span>
 
 
-<div class="viewcode-block" id="sensitivity_max"><a class="viewcode-back" href="../../../../metrics.html#captum.metrics.sensitivity_max">[docs]</a><span class="nd">@log_usage</span><span class="p">()</span>
+<div class="viewcode-block" id="sensitivity_max">
+<a class="viewcode-back" href="../../../../metrics.html#captum.metrics.sensitivity_max">[docs]</a>
+<span class="nd">@log_usage</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">sensitivity_max</span><span class="p">(</span>
     <span class="n">explanation_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">,</span>
@@ -101,7 +101,7 @@ src="/js/documentation_options.js"></script>
     <span class="n">max_examples_per_batch</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Explanation sensitivity measures the extent of explanation change when</span>
 <span class="sd">    the input is slightly perturbed. It has been shown that the models that</span>
 <span class="sd">    have high explanation sensitivity are prone to adversarial attacks:</span>
@@ -124,7 +124,7 @@ src="/js/documentation_options.js"></script>
 
 <span class="sd">    More about the Lipschitz Continuity Metric can also be found here</span>
 <span class="sd">    `On the Robustness of Interpretability Methods`</span>
-<span class="sd">    https://arxiv.org/pdf/1806.08049.pdf</span>
+<span class="sd">    https://arxiv.org/abs/1806.08049</span>
 <span class="sd">    and</span>
 <span class="sd">    `Towards Robust Interpretability with Self-Explaining Neural Networks`</span>
 <span class="sd">    https://papers.nips.cc/paper\</span>
@@ -133,16 +133,16 @@ src="/js/documentation_options.js"></script>
 
 <span class="sd">    More details about sensitivity max can be found here:</span>
 <span class="sd">    `On the (In)fidelity and Sensitivity of Explanations`</span>
-<span class="sd">    https://arxiv.org/pdf/1901.09392.pdf</span>
+<span class="sd">    https://arxiv.org/abs/1901.09392</span>
 
 <span class="sd">    Args:</span>
 
-<span class="sd">        explanation_func (callable):</span>
+<span class="sd">        explanation_func (Callable):</span>
 <span class="sd">                This function can be the `attribute` method of an</span>
 <span class="sd">                attribution algorithm or any other explanation method</span>
 <span class="sd">                that returns the explanations.</span>
 
-<span class="sd">        inputs (tensor or tuple of tensors):  Input for which</span>
+<span class="sd">        inputs (Tensor or tuple[Tensor, ...]): Input for which</span>
 <span class="sd">                explanations are computed. If `explanation_func` takes a</span>
 <span class="sd">                single tensor as input, a single input tensor should</span>
 <span class="sd">                be provided.</span>
@@ -153,7 +153,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                multiple input tensors are provided, the examples must</span>
 <span class="sd">                be aligned appropriately.</span>
 
-<span class="sd">        perturb_func (callable):</span>
+<span class="sd">        perturb_func (Callable):</span>
 <span class="sd">                The perturbation function of model inputs. This function takes</span>
 <span class="sd">                model inputs and optionally `perturb_radius` if</span>
 <span class="sd">                the function takes more than one argument and returns</span>
@@ -172,7 +172,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">        perturb_radius (float, optional): The epsilon radius used for sampling.</span>
 <span class="sd">            In the `default_perturb_func` it is used as the radius of</span>
 <span class="sd">            the L-Infinity ball. In a general case it can serve as a radius of</span>
-<span class="sd">            any L_p nom.</span>
+<span class="sd">            any L_p norm.</span>
 <span class="sd">            This argument is passed to `perturb_func` if it takes more than</span>
 <span class="sd">            one argument.</span>
 
@@ -183,10 +183,12 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                `perturb_func` function.</span>
 
 <span class="sd">                Default: 10</span>
-<span class="sd">        norm_ord (int, float, inf, -inf, 'fro', 'nuc', optional): The type of norm</span>
-<span class="sd">                that is used to compute the</span>
-<span class="sd">                norm of the sensitivity matrix which is defined as the difference</span>
-<span class="sd">                between the explanation function at its input and perturbed input.</span>
+<span class="sd">        norm_ord (int, float, or str, optional): The type of norm that is used to</span>
+<span class="sd">                compute the norm of the sensitivity matrix which is defined as the</span>
+<span class="sd">                difference between the explanation function at its input and perturbed</span>
+<span class="sd">                input. Acceptable values are either a string of 'fro' or 'nuc', or a</span>
+<span class="sd">                number in the range of [-inf, inf] (including float("-inf") &amp;</span>
+<span class="sd">                float("inf")).</span>
 
 <span class="sd">                Default: 'fro'</span>
 <span class="sd">        max_examples_per_batch (int, optional): The number of maximum input</span>
@@ -200,7 +202,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                `input batch size * n_perturb_samples`.</span>
 
 <span class="sd">                Default: None</span>
-<span class="sd">         **kwargs (Any, optional): Contains a list of arguments that are passed</span>
+<span class="sd">        **kwargs (Any, optional): Contains a list of arguments that are passed</span>
 <span class="sd">                to `explanation_func` explanation function which in some cases</span>
 <span class="sd">                could be the `attribute` function of an attribution algorithm.</span>
 <span class="sd">                Any additional arguments that need be passed to the explanation</span>
@@ -210,7 +212,7 @@ src="/js/documentation_options.js"></script>
 
 <span class="sd">    Returns:</span>
 
-<span class="sd">        sensitivities (tensor): A tensor of scalar sensitivity scores per</span>
+<span class="sd">        sensitivities (Tensor): A tensor of scalar sensitivity scores per</span>
 <span class="sd">               input example. The first dimension is equal to the</span>
 <span class="sd">               number of examples in the input batch and the second</span>
 <span class="sd">               dimension is one. Returned sensitivities are normalized by</span>
@@ -230,7 +232,7 @@ src="/js/documentation_options.js"></script>
     <span class="k">def</span> <span class="nf">_generate_perturbations</span><span class="p">(</span>
         <span class="n">current_n_perturb_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        The perturbations are generated for each example</span>
 <span class="sd">        `current_n_perturb_samples` times.</span>
 
@@ -334,7 +336,7 @@ src="/js/documentation_options.js"></script>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">max_values</span><span class="p">(</span><span class="n">sensitivities_norm</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 
-    <span class="n">inputs</span> <span class="o">=</span> <span class="n">_format_input</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">_format_tensor_into_tuples</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
     <span class="n">bsz</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
@@ -348,6 +350,7 @@ src="/js/documentation_options.js"></script>
             <span class="n">agg_func</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">metrics_max</span></div>
+
 </pre></div>
 </div>
 </div>
@@ -365,6 +368,8 @@ src="/js/documentation_options.js"></script>
 <li class="toctree-l1"><a class="reference internal" href="../../../../metrics.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../robust.html">Robustness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../concept.html">Concept-based Interpretability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../influence.html">Influential Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module.html">Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utilities.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../base_classes.html">Base Classes</a></li>
 </ul>
@@ -391,11 +396,11 @@ src="/js/documentation_options.js"></script>
 </form>
 </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 </div>
 </div>
 <div class="clearer"></div>
-</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2021 Facebook Inc.</section><script>
+</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2023 Facebook Inc.</section><script>
             (function() {
               var BAD_BASE = '/captum/';
               if (window.location.origin !== 'https://captum.ai') {

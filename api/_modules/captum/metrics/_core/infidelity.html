@@ -6,7 +6,7 @@
 
               ga('create', 'UA-44373548-48', 'auto');
               ga('send', 'pageview');
-            </script><link rel="stylesheet" href="/css/code_block_buttons.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+            </script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
         document.addEventListener('DOMContentLoaded', function() {
           addBackToTop(
             {"zIndex":100}
@@ -14,18 +14,17 @@
         });
         </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/captum_logo.svg" alt="Captum"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/introduction" target="_self">Docs</a></li><li class=""><a href="/tutorials/" target="_self">Tutorials</a></li><li class=""><a href="/api/" target="_self">API Reference</a></li><li class=""><a href="https://github.com/pytorch/captum" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div>
 <script type="text/javascript" id="documentation_options" data-url_root="./"
-src="/js/documentation_options.js"></script>
-<script type="text/javascript" src="/js/jquery.js"></script>
-<script type="text/javascript" src="/js/underscore.js"></script>
-<script type="text/javascript" src="/js/doctools.js"></script>
-<script type="text/javascript" src="/js/language_data.js"></script>
-<script type="text/javascript" src="/js/searchtools.js"></script>
+src="/_sphinx/documentation_options.js"></script>
+<script type="text/javascript" src="/_sphinx/jquery.js"></script>
+<script type="text/javascript" src="/_sphinx/underscore.js"></script>
+<script type="text/javascript" src="/_sphinx/doctools.js"></script>
+<script type="text/javascript" src="/_sphinx/language_data.js"></script>
+<script type="text/javascript" src="/_sphinx/searchtools.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js"></script>
-<script src="/js/katex_autorenderer.js"></script>
+<script src="/_sphinx/katex_autorenderer.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css" />
-<link rel="stylesheet" type="text/css" href="/css/katex-math.css" />
 <div class="sphinx wrapper"><div class="document">
 <div class="documentwrapper">
 <div class="bodywrapper">
@@ -33,18 +32,17 @@ src="/js/documentation_options.js"></script>
 <h1>Source code for captum.metrics._core.infidelity</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">cast</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">captum._utils.common</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ExpansionTypes</span><span class="p">,</span>
     <span class="n">_expand_additional_forward_args</span><span class="p">,</span>
     <span class="n">_expand_target</span><span class="p">,</span>
     <span class="n">_format_additional_forward_args</span><span class="p">,</span>
     <span class="n">_format_baseline</span><span class="p">,</span>
-    <span class="n">_format_input</span><span class="p">,</span>
     <span class="n">_format_tensor_into_tuples</span><span class="p">,</span>
     <span class="n">_run_forward</span><span class="p">,</span>
+    <span class="n">ExpansionTypes</span><span class="p">,</span>
     <span class="n">safe_div</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">captum._utils.typing</span> <span class="kn">import</span> <span class="n">BaselineType</span><span class="p">,</span> <span class="n">TargetType</span><span class="p">,</span> <span class="n">TensorOrTupleOfTensorsGeneric</span>
@@ -54,7 +52,7 @@ src="/js/documentation_options.js"></script>
 
 
 <span class="k">def</span> <span class="nf">infidelity_perturb_func_decorator</span><span class="p">(</span><span class="n">multipy_by_inputs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">"""An auxiliary, decorator function that helps with computing</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""An auxiliary, decorator function that helps with computing</span>
 <span class="sd">    perturbations given perturbed inputs. It can be useful for cases</span>
 <span class="sd">    when `pertub_func` returns only perturbed inputs and we</span>
 <span class="sd">    internally compute the perturbations as</span>
@@ -75,15 +73,15 @@ src="/js/documentation_options.js"></script>
 <span class="sd">    """</span>
 
     <span class="k">def</span> <span class="nf">sub_infidelity_perturb_func_decorator</span><span class="p">(</span><span class="n">pertub_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 
-<span class="sd">            pertub_func(callable): Input perturbation function that takes inputs</span>
+<span class="sd">            pertub_func(Callable): Input perturbation function that takes inputs</span>
 <span class="sd">                and optionally baselines and returns perturbed inputs</span>
 
 <span class="sd">        Returns:</span>
 
-<span class="sd">            default_perturb_func(callable): Internal default perturbation</span>
+<span class="sd">            default_perturb_func(Callable): Internal default perturbation</span>
 <span class="sd">            function that computes the perturbations internally and returns</span>
 <span class="sd">            perturbations and perturbed inputs.</span>
 
@@ -101,14 +99,14 @@ src="/js/documentation_options.js"></script>
         <span class="k">def</span> <span class="nf">default_perturb_func</span><span class="p">(</span>
             <span class="n">inputs</span><span class="p">:</span> <span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">,</span> <span class="n">baselines</span><span class="p">:</span> <span class="n">BaselineType</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="p">):</span>
-            <span class="sa">r</span><span class="sd">""" """</span>
+<span class="w">            </span><span class="sa">r</span><span class="sd">""" """</span>
             <span class="n">inputs_perturbed</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">pertub_func</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">baselines</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">baselines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="n">pertub_func</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
             <span class="p">)</span>
-            <span class="n">inputs_perturbed</span> <span class="o">=</span> <span class="n">_format_input</span><span class="p">(</span><span class="n">inputs_perturbed</span><span class="p">)</span>
-            <span class="n">inputs</span> <span class="o">=</span> <span class="n">_format_input</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="n">inputs_perturbed</span> <span class="o">=</span> <span class="n">_format_tensor_into_tuples</span><span class="p">(</span><span class="n">inputs_perturbed</span><span class="p">)</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="n">_format_tensor_into_tuples</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
             <span class="n">baselines</span> <span class="o">=</span> <span class="n">_format_baseline</span><span class="p">(</span><span class="n">baselines</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">baselines</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">perturbations</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
@@ -141,7 +139,9 @@ src="/js/documentation_options.js"></script>
     <span class="k">return</span> <span class="n">sub_infidelity_perturb_func_decorator</span>
 
 
-<div class="viewcode-block" id="infidelity"><a class="viewcode-back" href="../../../../metrics.html#captum.metrics.infidelity">[docs]</a><span class="nd">@log_usage</span><span class="p">()</span>
+<div class="viewcode-block" id="infidelity">
+<a class="viewcode-back" href="../../../../metrics.html#captum.metrics.infidelity">[docs]</a>
+<span class="nd">@log_usage</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">infidelity</span><span class="p">(</span>
     <span class="n">forward_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">perturb_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
@@ -154,13 +154,13 @@ src="/js/documentation_options.js"></script>
     <span class="n">max_examples_per_batch</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">normalize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Explanation infidelity represents the expected mean-squared error</span>
 <span class="sd">    between the explanation multiplied by a meaningful input perturbation</span>
 <span class="sd">    and the differences between the predictor function at its input</span>
 <span class="sd">    and perturbed input.</span>
 <span class="sd">    More details about the measure can be found in the following paper:</span>
-<span class="sd">    https://arxiv.org/pdf/1901.09392.pdf</span>
+<span class="sd">    https://arxiv.org/abs/1901.09392</span>
 
 <span class="sd">    It is derived from the completeness property of well-known attribution</span>
 <span class="sd">    algorithms and is a computationally more efficient and generalized</span>
@@ -168,7 +168,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">    of the attributions and the differences of the predictor function at</span>
 <span class="sd">    its input and fixed baseline. More details about the Sensitivity-n can</span>
 <span class="sd">    be found here:</span>
-<span class="sd">    https://arxiv.org/pdf/1711.06104.pdfs</span>
+<span class="sd">    https://arxiv.org/abs/1711.06104</span>
 
 <span class="sd">    The users can perturb the inputs any desired way by providing any</span>
 <span class="sd">    perturbation function that takes the inputs (and optionally baselines)</span>
@@ -181,10 +181,10 @@ src="/js/documentation_options.js"></script>
 
 <span class="sd">    Args:</span>
 
-<span class="sd">        forward_func (callable):</span>
+<span class="sd">        forward_func (Callable):</span>
 <span class="sd">                The forward function of the model or any modification of it.</span>
 
-<span class="sd">        perturb_func (callable):</span>
+<span class="sd">        perturb_func (Callable):</span>
 <span class="sd">                The perturbation function of model inputs. This function takes</span>
 <span class="sd">                model inputs and optionally baselines as input arguments and returns</span>
 <span class="sd">                either a tuple of perturbations and perturbed inputs or just</span>
@@ -239,12 +239,13 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                   Similar to previous case here as well we need to return only</span>
 <span class="sd">                   perturbed inputs in case `infidelity_perturb_func_decorator`</span>
 <span class="sd">                   decorates out `perturb_func`.</span>
+
 <span class="sd">                It is important to note that for performance reasons `perturb_func`</span>
 <span class="sd">                isn't called for each example individually but on a batch of</span>
 <span class="sd">                input examples that are repeated `max_examples_per_batch / batch_size`</span>
 <span class="sd">                times within the batch.</span>
 
-<span class="sd">        inputs (tensor or tuple of tensors):  Input for which</span>
+<span class="sd">        inputs (Tensor or tuple[Tensor, ...]): Input for which</span>
 <span class="sd">                attributions are computed. If forward_func takes a single</span>
 <span class="sd">                tensor as input, a single input tensor should be provided.</span>
 <span class="sd">                If forward_func takes multiple tensors as input, a tuple</span>
@@ -254,7 +255,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                multiple input tensors are provided, the examples must</span>
 <span class="sd">                be aligned appropriately.</span>
 
-<span class="sd">        baselines (scalar, tensor, tuple of scalars or tensors, optional):</span>
+<span class="sd">        baselines (scalar, Tensor, tuple of scalar, or Tensor, optional):</span>
 <span class="sd">                Baselines define reference values which sometimes represent ablated</span>
 <span class="sd">                values and are used to compare with the actual inputs to compute</span>
 <span class="sd">                importance scores in attribution algorithms. They can be represented</span>
@@ -283,13 +284,13 @@ src="/js/documentation_options.js"></script>
 
 <span class="sd">                Default: None</span>
 
-<span class="sd">        attributions (tensor or tuple of tensors):</span>
+<span class="sd">        attributions (Tensor or tuple[Tensor, ...]):</span>
 <span class="sd">                Attribution scores computed based on an attribution algorithm.</span>
 <span class="sd">                This attribution scores can be computed using the implementations</span>
 <span class="sd">                provided in the `captum.attr` package. Some of those attribution</span>
 <span class="sd">                approaches are so called global methods, which means that</span>
 <span class="sd">                they factor in model inputs' multiplier, as described in:</span>
-<span class="sd">                https://arxiv.org/pdf/1711.06104.pdf</span>
+<span class="sd">                https://arxiv.org/abs/1711.06104</span>
 <span class="sd">                Many global attribution algorithms can be used in local modes,</span>
 <span class="sd">                meaning that the inputs multiplier isn't factored in the</span>
 <span class="sd">                attribution scores.</span>
@@ -305,7 +306,7 @@ src="/js/documentation_options.js"></script>
 
 <span class="sd">                For local attributions we can use real-valued perturbations</span>
 <span class="sd">                whereas for global attributions that perturbation is binary.</span>
-<span class="sd">                https://arxiv.org/pdf/1901.09392.pdf</span>
+<span class="sd">                https://arxiv.org/abs/1901.09392</span>
 
 <span class="sd">                If we want to compute the infidelity of global attributions we</span>
 <span class="sd">                can use a binary perturbation matrix that will allow us to select</span>
@@ -325,7 +326,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                tensor as well. If inputs is provided as a tuple of tensors</span>
 <span class="sd">                then attributions will be tuples of tensors as well.</span>
 
-<span class="sd">        additional_forward_args (any, optional): If the forward function</span>
+<span class="sd">        additional_forward_args (Any, optional): If the forward function</span>
 <span class="sd">                requires additional arguments other than the inputs for</span>
 <span class="sd">                which attributions should not be computed, this argument</span>
 <span class="sd">                can be provided. It must be either a single additional</span>
@@ -338,7 +339,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                being passed to `perturb_func` as an input argument.</span>
 
 <span class="sd">                Default: None</span>
-<span class="sd">        target (int, tuple, tensor or list, optional): Indices for selecting</span>
+<span class="sd">        target (int, tuple, Tensor, or list, optional): Indices for selecting</span>
 <span class="sd">                predictions from output(for classification cases,</span>
 <span class="sd">                this is usually the target class).</span>
 <span class="sd">                If the network returns a scalar value per example, no target</span>
@@ -399,7 +400,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                Default: False</span>
 <span class="sd">    Returns:</span>
 
-<span class="sd">        infidelities (tensor): A tensor of scalar infidelity scores per</span>
+<span class="sd">        infidelities (Tensor): A tensor of scalar infidelity scores per</span>
 <span class="sd">                input example. The first dimension is equal to the</span>
 <span class="sd">                number of examples in the input batch and the second</span>
 <span class="sd">                dimension is one.</span>
@@ -423,7 +424,7 @@ src="/js/documentation_options.js"></script>
     <span class="k">def</span> <span class="nf">_generate_perturbations</span><span class="p">(</span>
         <span class="n">current_n_perturb_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">,</span> <span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">]:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        The perturbations are generated for each example</span>
 <span class="sd">        `current_n_perturb_samples` times.</span>
 
@@ -433,7 +434,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">        """</span>
 
         <span class="k">def</span> <span class="nf">call_perturb_func</span><span class="p">():</span>
-            <span class="sa">r</span><span class="sd">""" """</span>
+<span class="w">            </span><span class="sa">r</span><span class="sd">""" """</span>
             <span class="n">baselines_pert</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">inputs_pert</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs_expanded</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -474,7 +475,7 @@ src="/js/documentation_options.js"></script>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># asserts the sizes of the perturbations and inputs</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">perturbations</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span> <span class="p">(</span>
-            <span class="sd">"""The number of perturbed</span>
+<span class="w">            </span><span class="sd">"""The number of perturbed</span>
 <span class="sd">            inputs and corresponding perturbations must have the same number of</span>
 <span class="sd">            elements. Found number of inputs is: {} and perturbations:</span>
 <span class="sd">            {}"""</span>
@@ -483,7 +484,7 @@ src="/js/documentation_options.js"></script>
         <span class="c1"># asserts the shapes of the perturbations and perturbed inputs</span>
         <span class="k">for</span> <span class="n">perturb</span><span class="p">,</span> <span class="n">input_perturbed</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">perturbations</span><span class="p">,</span> <span class="n">inputs_perturbed</span><span class="p">):</span>
             <span class="k">assert</span> <span class="n">perturb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">input_perturbed</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="p">(</span>
-                <span class="sd">"""Perturbed input</span>
+<span class="w">                </span><span class="sd">"""Perturbed input</span>
 <span class="sd">                and corresponding perturbation must have the same shape and</span>
 <span class="sd">                dimensionality. Found perturbation shape is: {} and the input shape</span>
 <span class="sd">                is: {}"""</span>
@@ -566,7 +567,7 @@ src="/js/documentation_options.js"></script>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">agg_t</span> <span class="o">+</span> <span class="n">t</span> <span class="k">for</span> <span class="n">agg_t</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">agg_tensors</span><span class="p">,</span> <span class="n">tensors</span><span class="p">))</span>
 
     <span class="c1"># perform argument formattings</span>
-    <span class="n">inputs</span> <span class="o">=</span> <span class="n">_format_input</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">_format_tensor_into_tuples</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
     <span class="k">if</span> <span class="n">baselines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">baselines</span> <span class="o">=</span> <span class="n">_format_baseline</span><span class="p">(</span><span class="n">baselines</span><span class="p">,</span> <span class="n">cast</span><span class="p">(</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">inputs</span><span class="p">))</span>
     <span class="n">additional_forward_args</span> <span class="o">=</span> <span class="n">_format_additional_forward_args</span><span class="p">(</span><span class="n">additional_forward_args</span><span class="p">)</span>
@@ -574,13 +575,13 @@ src="/js/documentation_options.js"></script>
 
     <span class="c1"># Make sure that inputs and corresponding attributions have matching sizes.</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">attributions</span><span class="p">),</span> <span class="p">(</span>
-        <span class="sd">"""The number of tensors in the inputs and</span>
+<span class="w">        </span><span class="sd">"""The number of tensors in the inputs and</span>
 <span class="sd">        attributions must match. Found number of tensors in the inputs is: {} and in the</span>
 <span class="sd">        attributions: {}"""</span>
     <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">attributions</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">inp</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">attributions</span><span class="p">):</span>
         <span class="k">assert</span> <span class="n">inp</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">attr</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="p">(</span>
-            <span class="sd">"""Inputs and attributions must have</span>
+<span class="w">            </span><span class="sd">"""Inputs and attributions must have</span>
 <span class="sd">        matching shapes. One of the input tensor's shape is {} and the</span>
 <span class="sd">        attribution tensor's shape is: {}"""</span>
         <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">attr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -604,7 +605,7 @@ src="/js/documentation_options.js"></script>
         <span class="n">beta</span> <span class="o">=</span> <span class="n">safe_div</span><span class="p">(</span><span class="n">beta_num</span><span class="p">,</span> <span class="n">beta_denorm</span><span class="p">)</span>
 
         <span class="n">infidelity_values</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">beta</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">agg_tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">agg_tensors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">agg_tensors</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">beta</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">agg_tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">agg_tensors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">agg_tensors</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">infidelity_values</span> <span class="o">=</span> <span class="n">agg_tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -612,6 +613,7 @@ src="/js/documentation_options.js"></script>
     <span class="n">infidelity_values</span> <span class="o">/=</span> <span class="n">n_perturb_samples</span>
 
     <span class="k">return</span> <span class="n">infidelity_values</span></div>
+
 </pre></div>
 </div>
 </div>
@@ -629,6 +631,8 @@ src="/js/documentation_options.js"></script>
 <li class="toctree-l1"><a class="reference internal" href="../../../../metrics.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../robust.html">Robustness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../concept.html">Concept-based Interpretability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../influence.html">Influential Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module.html">Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utilities.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../base_classes.html">Base Classes</a></li>
 </ul>
@@ -655,11 +659,11 @@ src="/js/documentation_options.js"></script>
 </form>
 </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 </div>
 </div>
 <div class="clearer"></div>
-</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2021 Facebook Inc.</section><script>
+</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2023 Facebook Inc.</section><script>
             (function() {
               var BAD_BASE = '/captum/';
               if (window.location.origin !== 'https://captum.ai') {

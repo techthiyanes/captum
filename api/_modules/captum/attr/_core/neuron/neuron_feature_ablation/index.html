@@ -6,7 +6,7 @@
 
               ga('create', 'UA-44373548-48', 'auto');
               ga('send', 'pageview');
-            </script><link rel="stylesheet" href="/css/code_block_buttons.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+            </script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
         document.addEventListener('DOMContentLoaded', function() {
           addBackToTop(
             {"zIndex":100}
@@ -14,18 +14,17 @@
         });
         </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/captum_logo.svg" alt="Captum"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/introduction" target="_self">Docs</a></li><li class=""><a href="/tutorials/" target="_self">Tutorials</a></li><li class=""><a href="/api/" target="_self">API Reference</a></li><li class=""><a href="https://github.com/pytorch/captum" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div>
 <script type="text/javascript" id="documentation_options" data-url_root="./"
-src="/js/documentation_options.js"></script>
-<script type="text/javascript" src="/js/jquery.js"></script>
-<script type="text/javascript" src="/js/underscore.js"></script>
-<script type="text/javascript" src="/js/doctools.js"></script>
-<script type="text/javascript" src="/js/language_data.js"></script>
-<script type="text/javascript" src="/js/searchtools.js"></script>
+src="/_sphinx/documentation_options.js"></script>
+<script type="text/javascript" src="/_sphinx/jquery.js"></script>
+<script type="text/javascript" src="/_sphinx/underscore.js"></script>
+<script type="text/javascript" src="/_sphinx/doctools.js"></script>
+<script type="text/javascript" src="/_sphinx/language_data.js"></script>
+<script type="text/javascript" src="/_sphinx/searchtools.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js"></script>
-<script src="/js/katex_autorenderer.js"></script>
+<script src="/_sphinx/katex_autorenderer.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css" />
-<link rel="stylesheet" type="text/css" href="/css/katex-math.css" />
 <div class="sphinx wrapper"><div class="document">
 <div class="documentwrapper">
 <div class="bodywrapper">
@@ -44,8 +43,10 @@ src="/js/documentation_options.js"></script>
 <span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="n">Module</span>
 
 
-<div class="viewcode-block" id="NeuronFeatureAblation"><a class="viewcode-back" href="../../../../../neuron.html#captum.attr.NeuronFeatureAblation">[docs]</a><span class="k">class</span> <span class="nc">NeuronFeatureAblation</span><span class="p">(</span><span class="n">NeuronAttribution</span><span class="p">,</span> <span class="n">PerturbationAttribution</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">"""</span>
+<div class="viewcode-block" id="NeuronFeatureAblation">
+<a class="viewcode-back" href="../../../../../neuron.html#captum.attr.NeuronFeatureAblation">[docs]</a>
+<span class="k">class</span> <span class="nc">NeuronFeatureAblation</span><span class="p">(</span><span class="n">NeuronAttribution</span><span class="p">,</span> <span class="n">PerturbationAttribution</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    A perturbation based approach to computing neuron attribution,</span>
 <span class="sd">    involving replacing each input feature with a given baseline /</span>
 <span class="sd">    reference, and computing the difference in the neuron's input / output.</span>
@@ -65,10 +66,10 @@ src="/js/documentation_options.js"></script>
         <span class="n">layer</span><span class="p">:</span> <span class="n">Module</span><span class="p">,</span>
         <span class="n">device_ids</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 
-<span class="sd">            forward_func (callable):  The forward function of the model or any</span>
+<span class="sd">            forward_func (Callable): The forward function of the model or any</span>
 <span class="sd">                          modification of it</span>
 <span class="sd">            layer (torch.nn.Module): Layer for which attributions are computed.</span>
 <span class="sd">                          Attributions for a particular neuron in the input or output</span>
@@ -77,7 +78,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                          Currently, it is assumed that the inputs or the outputs</span>
 <span class="sd">                          of the layer, depending on which one is used for</span>
 <span class="sd">                          attribution, can only be a single tensor.</span>
-<span class="sd">            device_ids (list(int)): Device ID list, necessary only if forward_func</span>
+<span class="sd">            device_ids (list[int]): Device ID list, necessary only if forward_func</span>
 <span class="sd">                          applies a DataParallel model. This allows reconstruction of</span>
 <span class="sd">                          intermediate outputs from batched results across devices.</span>
 <span class="sd">                          If forward_func is given as the DataParallel model itself,</span>
@@ -86,7 +87,9 @@ src="/js/documentation_options.js"></script>
         <span class="n">NeuronAttribution</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forward_func</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">device_ids</span><span class="p">)</span>
         <span class="n">PerturbationAttribution</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forward_func</span><span class="p">)</span>
 
-<div class="viewcode-block" id="NeuronFeatureAblation.attribute"><a class="viewcode-back" href="../../../../../neuron.html#captum.attr.NeuronFeatureAblation.attribute">[docs]</a>    <span class="nd">@log_usage</span><span class="p">()</span>
+<div class="viewcode-block" id="NeuronFeatureAblation.attribute">
+<a class="viewcode-back" href="../../../../../neuron.html#captum.attr.NeuronFeatureAblation.attribute">[docs]</a>
+    <span class="nd">@log_usage</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">attribute</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">inputs</span><span class="p">:</span> <span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">,</span>
@@ -97,10 +100,10 @@ src="/js/documentation_options.js"></script>
         <span class="n">attribute_to_neuron_input</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">perturbations_per_eval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 
-<span class="sd">            inputs (tensor or tuple of tensors):  Input for which neuron</span>
+<span class="sd">            inputs (Tensor or tuple[Tensor, ...]): Input for which neuron</span>
 <span class="sd">                        attributions are computed. If forward_func takes a single</span>
 <span class="sd">                        tensor as input, a single input tensor should be provided.</span>
 <span class="sd">                        If forward_func takes multiple tensors as input, a tuple</span>
@@ -108,7 +111,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                        that for all given input tensors, dimension 0 corresponds</span>
 <span class="sd">                        to the number of examples, and if multiple input tensors</span>
 <span class="sd">                        are provided, the examples must be aligned appropriately.</span>
-<span class="sd">            neuron_selector (int, callable, or tuple of ints or slices):</span>
+<span class="sd">            neuron_selector (int, Callable, tuple[int], or slice):</span>
 <span class="sd">                        Selector for neuron</span>
 <span class="sd">                        in given layer for which attribution is desired.</span>
 <span class="sd">                        Neuron selector can be provided as:</span>
@@ -129,7 +132,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                          indexed output tensor is used for attribution. Note</span>
 <span class="sd">                          that specifying a slice of a tensor would amount to</span>
 <span class="sd">                          computing the attribution of the sum of the specified</span>
-<span class="sd">                          neurons, and not the individual neurons independantly.</span>
+<span class="sd">                          neurons, and not the individual neurons independently.</span>
 
 <span class="sd">                        - a callable, which should</span>
 <span class="sd">                          take the target layer as input (single tensor or tuple</span>
@@ -141,7 +144,8 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                          this function returns either a tensor with one element</span>
 <span class="sd">                          or a 1D tensor with length equal to batch_size (one scalar</span>
 <span class="sd">                          per input example)</span>
-<span class="sd">            baselines (scalar, tensor, tuple of scalars or tensors, optional):</span>
+
+<span class="sd">            baselines (scalar, Tensor, tuple of scalar, or Tensor, optional):</span>
 <span class="sd">                        Baselines define reference value which replaces each</span>
 <span class="sd">                        feature when ablated.</span>
 <span class="sd">                        Baselines can be provided as:</span>
@@ -165,10 +169,11 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                          - or a scalar, corresponding to a tensor in the</span>
 <span class="sd">                            inputs' tuple. This scalar value is broadcasted</span>
 <span class="sd">                            for corresponding input tensor.</span>
+
 <span class="sd">                        In the cases when `baselines` is not provided, we internally</span>
 <span class="sd">                        use zero scalar corresponding to each input tensor.</span>
 <span class="sd">                        Default: None</span>
-<span class="sd">            additional_forward_args (any, optional): If the forward function</span>
+<span class="sd">            additional_forward_args (Any, optional): If the forward function</span>
 <span class="sd">                        requires additional arguments other than the inputs for</span>
 <span class="sd">                        which attributions should not be computed, this argument</span>
 <span class="sd">                        can be provided. It must be either a single additional</span>
@@ -180,7 +185,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                        Note that attributions are not computed with respect</span>
 <span class="sd">                        to these arguments.</span>
 <span class="sd">                        Default: None</span>
-<span class="sd">            feature_mask (tensor or tuple of tensors, optional):</span>
+<span class="sd">            feature_mask (Tensor or tuple[Tensor, ...], optional):</span>
 <span class="sd">                        feature_mask defines a mask for the input, grouping</span>
 <span class="sd">                        features which should be ablated together. feature_mask</span>
 <span class="sd">                        should contain the same number of tensors as inputs.</span>
@@ -220,8 +225,8 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                        Default: 1</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            *tensor* or tuple of *tensors* of **attributions**:</span>
-<span class="sd">            - **attributions** (*tensor* or tuple of *tensors*):</span>
+<span class="sd">            *Tensor* or *tuple[Tensor, ...]* of **attributions**:</span>
+<span class="sd">            - **attributions** (*Tensor* or *tuple[Tensor, ...]*):</span>
 <span class="sd">                        Attributions of particular neuron with respect to each input</span>
 <span class="sd">                        feature. Attributions will always be the same size as the</span>
 <span class="sd">                        provided inputs, with each value providing the attribution</span>
@@ -297,7 +302,9 @@ src="/js/documentation_options.js"></script>
             <span class="n">additional_forward_args</span><span class="o">=</span><span class="n">additional_forward_args</span><span class="p">,</span>
             <span class="n">feature_mask</span><span class="o">=</span><span class="n">feature_mask</span><span class="p">,</span>
             <span class="n">perturbations_per_eval</span><span class="o">=</span><span class="n">perturbations_per_eval</span><span class="p">,</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+</div>
+
 </pre></div>
 </div>
 </div>
@@ -315,6 +322,8 @@ src="/js/documentation_options.js"></script>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../metrics.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../robust.html">Robustness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../concept.html">Concept-based Interpretability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../influence.html">Influential Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../module.html">Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../utilities.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../base_classes.html">Base Classes</a></li>
 </ul>
@@ -341,11 +350,11 @@ src="/js/documentation_options.js"></script>
 </form>
 </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 </div>
 </div>
 <div class="clearer"></div>
-</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2021 Facebook Inc.</section><script>
+</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2023 Facebook Inc.</section><script>
             (function() {
               var BAD_BASE = '/captum/';
               if (window.location.origin !== 'https://captum.ai') {

@@ -6,7 +6,7 @@
 
               ga('create', 'UA-44373548-48', 'auto');
               ga('send', 'pageview');
-            </script><link rel="stylesheet" href="/css/code_block_buttons.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+            </script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
         document.addEventListener('DOMContentLoaded', function() {
           addBackToTop(
             {"zIndex":100}
@@ -14,18 +14,17 @@
         });
         </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/captum_logo.svg" alt="Captum"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/introduction" target="_self">Docs</a></li><li class=""><a href="/tutorials/" target="_self">Tutorials</a></li><li class=""><a href="/api/" target="_self">API Reference</a></li><li class=""><a href="https://github.com/pytorch/captum" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div>
 <script type="text/javascript" id="documentation_options" data-url_root="./"
-src="/js/documentation_options.js"></script>
-<script type="text/javascript" src="/js/jquery.js"></script>
-<script type="text/javascript" src="/js/underscore.js"></script>
-<script type="text/javascript" src="/js/doctools.js"></script>
-<script type="text/javascript" src="/js/language_data.js"></script>
-<script type="text/javascript" src="/js/searchtools.js"></script>
+src="/_sphinx/documentation_options.js"></script>
+<script type="text/javascript" src="/_sphinx/jquery.js"></script>
+<script type="text/javascript" src="/_sphinx/underscore.js"></script>
+<script type="text/javascript" src="/_sphinx/doctools.js"></script>
+<script type="text/javascript" src="/_sphinx/language_data.js"></script>
+<script type="text/javascript" src="/_sphinx/searchtools.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js"></script>
-<script src="/js/katex_autorenderer.js"></script>
+<script src="/_sphinx/katex_autorenderer.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css" />
-<link rel="stylesheet" type="text/css" href="/css/katex-math.css" />
 <div class="sphinx wrapper"><div class="document">
 <div class="documentwrapper">
 <div class="bodywrapper">
@@ -34,7 +33,7 @@ src="/js/documentation_options.js"></script>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">cast</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">captum._utils.common</span> <span class="kn">import</span> <span class="p">(</span>
@@ -43,6 +42,7 @@ src="/js/documentation_options.js"></script>
     <span class="n">_reduce_list</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">captum._utils.typing</span> <span class="kn">import</span> <span class="n">TargetType</span>
+<span class="kn">from</span> <span class="nn">captum.log</span> <span class="kn">import</span> <span class="n">log_usage</span>
 <span class="kn">from</span> <span class="nn">captum.robust._core.perturbation</span> <span class="kn">import</span> <span class="n">Perturbation</span>
 <span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span>
 
@@ -70,7 +70,9 @@ src="/js/documentation_options.js"></script>
     <span class="n">BINARY</span> <span class="o">=</span> <span class="mi">1</span>
 
 
-<div class="viewcode-block" id="MinParamPerturbation"><a class="viewcode-back" href="../../../../../robust.html#captum.robust.MinParamPerturbation">[docs]</a><span class="k">class</span> <span class="nc">MinParamPerturbation</span><span class="p">:</span>
+<div class="viewcode-block" id="MinParamPerturbation">
+<a class="viewcode-back" href="../../../../../robust.html#captum.robust.MinParamPerturbation">[docs]</a>
+<span class="k">class</span> <span class="nc">MinParamPerturbation</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">forward_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
@@ -84,8 +86,8 @@ src="/js/documentation_options.js"></script>
         <span class="n">preproc_fn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">apply_before_preproc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">correct_fn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Identifies minimal perturbation based on target variable which causes</span>
 <span class="sd">        misclassification (or other incorrect prediction) of target input.</span>
 
@@ -96,7 +98,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">        corresponding perturbed input.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            forward_func (callable or torch.nn.Module): This can either be an instance</span>
+<span class="sd">            forward_func (Callable or torch.nn.Module): This can either be an instance</span>
 <span class="sd">                of pytorch model or any modification of a model's forward</span>
 <span class="sd">                function.</span>
 
@@ -118,23 +120,23 @@ src="/js/documentation_options.js"></script>
 <span class="sd">            arg_step (int, float): Minimum interval for increase of target variable.</span>
 
 <span class="sd">            mode (str, optional): Mode for search of minimum attack value;</span>
-<span class="sd">                either 'linear' for linear search on variable, or 'binary' for</span>
+<span class="sd">                either ``linear`` for linear search on variable, or ``binary`` for</span>
 <span class="sd">                binary search of variable</span>
-<span class="sd">                Default: 'linear'</span>
+<span class="sd">                Default: ``linear``</span>
 
 <span class="sd">            num_attempts (int, optional): Number of attempts or trials with</span>
 <span class="sd">                given variable. This should only be set to &gt; 1 for non-deterministic</span>
 <span class="sd">                perturbation / attack functions</span>
-<span class="sd">                Default: 1</span>
+<span class="sd">                Default: ``1``</span>
 
-<span class="sd">            preproc_fn (callable, optional): Optional method applied to inputs. Output</span>
+<span class="sd">            preproc_fn (Callable, optional): Optional method applied to inputs. Output</span>
 <span class="sd">                of preproc_fn is then provided as input to model, in addition to</span>
 <span class="sd">                additional_forward_args provided to evaluate.</span>
-<span class="sd">                Default: None</span>
+<span class="sd">                Default: ``None``</span>
 
 <span class="sd">            apply_before_preproc (bool, optional): Defines whether attack should be</span>
 <span class="sd">                applied before or after preproc function.</span>
-<span class="sd">                Default: False</span>
+<span class="sd">                Default: ``False``</span>
 
 <span class="sd">            correct_fn (Callable, optional): This determines whether the perturbed input</span>
 <span class="sd">                leads to a correct or incorrect prediction. By default, this function</span>
@@ -147,13 +149,15 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                function must be provided which determines correctness.</span>
 
 <span class="sd">                The first argument to this function must be the model out;</span>
-<span class="sd">                any additional arguments should be provided through correct_fn_kwargs.</span>
+<span class="sd">                any additional arguments should be provided through</span>
+<span class="sd">                ``correct_fn_kwargs``.</span>
 
-<span class="sd">                This function should have the following signature:</span>
+<span class="sd">                This function should have the following signature::</span>
+
 <span class="sd">                    def correct_fn(model_out: Tensor, **kwargs: Any) -&gt; bool</span>
 
 <span class="sd">                Method should return a boolean if correct (True) and incorrect (False).</span>
-<span class="sd">                Default: None (applies standard correct_fn for classification)</span>
+<span class="sd">                Default: ``None`` (applies standard correct_fn for classification)</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">forward_func</span> <span class="o">=</span> <span class="n">forward_func</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attack</span> <span class="o">=</span> <span class="n">attack</span>
@@ -366,7 +370,10 @@ src="/js/documentation_options.js"></script>
 
         <span class="k">return</span> <span class="n">min_input</span><span class="p">,</span> <span class="n">min_so_far</span>
 
-<div class="viewcode-block" id="MinParamPerturbation.evaluate"><a class="viewcode-back" href="../../../../../robust.html#captum.robust.MinParamPerturbation.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span>
+<div class="viewcode-block" id="MinParamPerturbation.evaluate">
+<a class="viewcode-back" href="../../../../../robust.html#captum.robust.MinParamPerturbation.evaluate">[docs]</a>
+    <span class="nd">@log_usage</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">inputs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">additional_forward_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -375,7 +382,7 @@ src="/js/documentation_options.js"></script>
         <span class="n">attack_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">correct_fn_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        This method evaluates the model at each perturbed input and identifies</span>
 <span class="sd">        the minimum perturbation that leads to an incorrect model prediction.</span>
 
@@ -396,7 +403,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                    pre-processing function is provided,</span>
 <span class="sd">                    this input is provided directly to the main model and all attacks.</span>
 
-<span class="sd">            additional_forward_args (any, optional): If the forward function</span>
+<span class="sd">            additional_forward_args (Any, optional): If the forward function</span>
 <span class="sd">                    requires additional arguments other than the preprocessing</span>
 <span class="sd">                    outputs (or inputs if preproc_fn is None), this argument</span>
 <span class="sd">                    can be provided. It must be either a single additional</span>
@@ -408,9 +415,9 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                    For a tensor, the first dimension of the tensor must</span>
 <span class="sd">                    correspond to the number of examples. For all other types,</span>
 <span class="sd">                    the given argument is used for all forward evaluations.</span>
-<span class="sd">                    Default: None</span>
+<span class="sd">                    Default: ``None``</span>
 <span class="sd">            target (TargetType): Target class for classification. This is required if</span>
-<span class="sd">                using the default correct_fn</span>
+<span class="sd">                using the default ``correct_fn``.</span>
 
 <span class="sd">            perturbations_per_eval (int, optional): Allows perturbations of multiple</span>
 <span class="sd">                    attacks to be grouped and evaluated in one call of forward_fn</span>
@@ -424,10 +431,10 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                    In order to apply this functionality, the output of preproc_fn</span>
 <span class="sd">                    (or inputs itself if no preproc_fn is provided) must be a tensor</span>
 <span class="sd">                    or tuple of tensors.</span>
-<span class="sd">                    Default: 1</span>
-<span class="sd">            attack_kwargs (dictionary, optional): Optional dictionary of keyword</span>
+<span class="sd">                    Default: ``1``</span>
+<span class="sd">            attack_kwargs (dict, optional): Optional dictionary of keyword</span>
 <span class="sd">                    arguments provided to attack function</span>
-<span class="sd">            correct_fn_kwargs (dictionary, optional): Optional dictionary of keyword</span>
+<span class="sd">            correct_fn_kwargs (dict, optional): Optional dictionary of keyword</span>
 <span class="sd">                    arguments provided to correct function</span>
 
 <span class="sd">        Returns:</span>
@@ -487,7 +494,9 @@ src="/js/documentation_options.js"></script>
             <span class="n">correct_fn_kwargs</span><span class="p">,</span>
             <span class="n">target</span><span class="p">,</span>
             <span class="n">perturbations_per_eval</span><span class="p">,</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+</div>
+
 </pre></div>
 </div>
 </div>
@@ -505,6 +514,8 @@ src="/js/documentation_options.js"></script>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../metrics.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../robust.html">Robustness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../concept.html">Concept-based Interpretability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../influence.html">Influential Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../module.html">Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../utilities.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../base_classes.html">Base Classes</a></li>
 </ul>
@@ -531,11 +542,11 @@ src="/js/documentation_options.js"></script>
 </form>
 </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 </div>
 </div>
 <div class="clearer"></div>
-</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2021 Facebook Inc.</section><script>
+</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2023 Facebook Inc.</section><script>
             (function() {
               var BAD_BASE = '/captum/';
               if (window.location.origin !== 'https://captum.ai') {

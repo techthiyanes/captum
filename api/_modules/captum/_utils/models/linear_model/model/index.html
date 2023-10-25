@@ -6,7 +6,7 @@
 
               ga('create', 'UA-44373548-48', 'auto');
               ga('send', 'pageview');
-            </script><link rel="stylesheet" href="/css/code_block_buttons.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+            </script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
         document.addEventListener('DOMContentLoaded', function() {
           addBackToTop(
             {"zIndex":100}
@@ -14,24 +14,23 @@
         });
         </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/captum_logo.svg" alt="Captum"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/introduction" target="_self">Docs</a></li><li class=""><a href="/tutorials/" target="_self">Tutorials</a></li><li class=""><a href="/api/" target="_self">API Reference</a></li><li class=""><a href="https://github.com/pytorch/captum" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div>
 <script type="text/javascript" id="documentation_options" data-url_root="./"
-src="/js/documentation_options.js"></script>
-<script type="text/javascript" src="/js/jquery.js"></script>
-<script type="text/javascript" src="/js/underscore.js"></script>
-<script type="text/javascript" src="/js/doctools.js"></script>
-<script type="text/javascript" src="/js/language_data.js"></script>
-<script type="text/javascript" src="/js/searchtools.js"></script>
+src="/_sphinx/documentation_options.js"></script>
+<script type="text/javascript" src="/_sphinx/jquery.js"></script>
+<script type="text/javascript" src="/_sphinx/underscore.js"></script>
+<script type="text/javascript" src="/_sphinx/doctools.js"></script>
+<script type="text/javascript" src="/_sphinx/language_data.js"></script>
+<script type="text/javascript" src="/_sphinx/searchtools.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js"></script>
-<script src="/js/katex_autorenderer.js"></script>
+<script src="/_sphinx/katex_autorenderer.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css" />
-<link rel="stylesheet" type="text/css" href="/css/katex-math.css" />
 <div class="sphinx wrapper"><div class="document">
 <div class="documentwrapper">
 <div class="bodywrapper">
 <div class="body" role="main">
 <h1>Source code for captum._utils.models.linear_model.model</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">cast</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">cast</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">from</span> <span class="nn">captum._utils.models.model</span> <span class="kn">import</span> <span class="n">Model</span>
@@ -43,7 +42,7 @@ src="/js/documentation_options.js"></script>
     <span class="n">SUPPORTED_NORMS</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"batch_norm"</span><span class="p">,</span> <span class="s2">"layer_norm"</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Constructs a linear model with a training function and additional</span>
 <span class="sd">        construction arguments that will be sent to</span>
 <span class="sd">        `self._construct_model_params` after a `self.fit` is called. Please note</span>
@@ -53,7 +52,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">        Please note that this is an experimental feature.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            train_fn (callable)</span>
+<span class="sd">            train_fn (Callable)</span>
 <span class="sd">                The function to train with. See</span>
 <span class="sd">                `captum._utils.models.linear_model.train.sgd_train_linear_model`</span>
 <span class="sd">                and</span>
@@ -81,7 +80,7 @@ src="/js/documentation_options.js"></script>
         <span class="n">bias_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">classes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Lazily initializes a linear model. This will be called for you in a</span>
 <span class="sd">        train method.</span>
 
@@ -98,14 +97,14 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                normalization parameters used.</span>
 <span class="sd">            bias (bool):</span>
 <span class="sd">                Whether to add a bias term. Not needed if normalized input.</span>
-<span class="sd">            weight_values (tensor, optional):</span>
+<span class="sd">            weight_values (Tensor, optional):</span>
 <span class="sd">                The values to initialize the linear model with. This must be a</span>
 <span class="sd">                1D or 2D tensor, and of the form `(num_outputs, num_features)` or</span>
 <span class="sd">                `(num_features,)`. Additionally, if this is provided you need not</span>
 <span class="sd">                to provide `in_features` or `out_features`.</span>
-<span class="sd">            bias_value (tensor, optional):</span>
+<span class="sd">            bias_value (Tensor, optional):</span>
 <span class="sd">                The bias value to initialize the model with.</span>
-<span class="sd">            classes (tensor, optional):</span>
+<span class="sd">            classes (Tensor, optional):</span>
 <span class="sd">                The list of prediction classes supported by the model in case it</span>
 <span class="sd">                performs classificaton. In case of regression it is set to None.</span>
 <span class="sd">                Default: None</span>
@@ -150,7 +149,7 @@ src="/js/documentation_options.js"></script>
             <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="n">classes</span>
 
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Calls `self.train_fn`</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_fn</span><span class="p">(</span>
@@ -167,7 +166,7 @@ src="/js/documentation_options.js"></script>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">representation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Returns a tensor which describes the hyper-plane input space. This does</span>
 <span class="sd">        not include the bias. For bias/intercept, please use `self.bias`</span>
 <span class="sd">        """</span>
@@ -175,7 +174,7 @@ src="/js/documentation_options.js"></script>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">bias</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Returns the bias of the linear model</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">bias</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -188,9 +187,11 @@ src="/js/documentation_options.js"></script>
         <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">Tensor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">classes</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="SGDLinearModel"><a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SGDLinearModel">[docs]</a><span class="k">class</span> <span class="nc">SGDLinearModel</span><span class="p">(</span><span class="n">LinearModel</span><span class="p">):</span>
+<div class="viewcode-block" id="SGDLinearModel">
+<a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SGDLinearModel">[docs]</a>
+<span class="k">class</span> <span class="nc">SGDLinearModel</span><span class="p">(</span><span class="n">LinearModel</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Factory class. Construct a a `LinearModel` with the</span>
 <span class="sd">        `sgd_train_linear_model` as the train method</span>
 
@@ -206,9 +207,12 @@ src="/js/documentation_options.js"></script>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">train_fn</span><span class="o">=</span><span class="n">sgd_train_linear_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="SGDLasso"><a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SGDLasso">[docs]</a><span class="k">class</span> <span class="nc">SGDLasso</span><span class="p">(</span><span class="n">SGDLinearModel</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SGDLasso">
+<a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SGDLasso">[docs]</a>
+<span class="k">class</span> <span class="nc">SGDLasso</span><span class="p">(</span><span class="n">SGDLinearModel</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Factory class to train a `LinearModel` with SGD</span>
 <span class="sd">        (`sgd_train_linear_model`) whilst setting appropriate parameters to</span>
 <span class="sd">        optimize for ridge regression loss. This optimizes L2 loss + alpha * L1</span>
@@ -219,16 +223,22 @@ src="/js/documentation_options.js"></script>
 <span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SGDLasso.fit"><a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SGDLasso.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="SGDLasso.fit">
+<a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SGDLasso.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># avoid cycles</span>
         <span class="kn">from</span> <span class="nn">captum._utils.models.linear_model.train</span> <span class="kn">import</span> <span class="n">l2_loss</span>
 
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="n">loss_fn</span><span class="o">=</span><span class="n">l2_loss</span><span class="p">,</span> <span class="n">reg_term</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="n">loss_fn</span><span class="o">=</span><span class="n">l2_loss</span><span class="p">,</span> <span class="n">reg_term</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="SGDRidge"><a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SGDRidge">[docs]</a><span class="k">class</span> <span class="nc">SGDRidge</span><span class="p">(</span><span class="n">SGDLinearModel</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SGDRidge">
+<a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SGDRidge">[docs]</a>
+<span class="k">class</span> <span class="nc">SGDRidge</span><span class="p">(</span><span class="n">SGDLinearModel</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Factory class to train a `LinearModel` with SGD</span>
 <span class="sd">        (`sgd_train_linear_model`) whilst setting appropriate parameters to</span>
 <span class="sd">        optimize for ridge regression loss. This optimizes L2 loss + alpha *</span>
@@ -236,16 +246,20 @@ src="/js/documentation_options.js"></script>
 <span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SGDRidge.fit"><a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SGDRidge.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="SGDRidge.fit">
+<a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SGDRidge.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># avoid cycles</span>
         <span class="kn">from</span> <span class="nn">captum._utils.models.linear_model.train</span> <span class="kn">import</span> <span class="n">l2_loss</span>
 
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="n">loss_fn</span><span class="o">=</span><span class="n">l2_loss</span><span class="p">,</span> <span class="n">reg_term</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="n">loss_fn</span><span class="o">=</span><span class="n">l2_loss</span><span class="p">,</span> <span class="n">reg_term</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
+
 
 
 <span class="k">class</span> <span class="nc">SGDLinearRegression</span><span class="p">(</span><span class="n">SGDLinearModel</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Factory class to train a `LinearModel` with SGD</span>
 <span class="sd">        (`sgd_train_linear_model`). For linear regression this assigns the loss</span>
 <span class="sd">        to L2 and no regularization.</span>
@@ -261,9 +275,11 @@ src="/js/documentation_options.js"></script>
         <span class="p">)</span>
 
 
-<div class="viewcode-block" id="SkLearnLinearModel"><a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnLinearModel">[docs]</a><span class="k">class</span> <span class="nc">SkLearnLinearModel</span><span class="p">(</span><span class="n">LinearModel</span><span class="p">):</span>
+<div class="viewcode-block" id="SkLearnLinearModel">
+<a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnLinearModel">[docs]</a>
+<span class="k">class</span> <span class="nc">SkLearnLinearModel</span><span class="p">(</span><span class="n">LinearModel</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sklearn_module</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Factory class to construct a `LinearModel` with sklearn training method.</span>
 
 <span class="sd">        Please note that this assumes:</span>
@@ -292,8 +308,10 @@ src="/js/documentation_options.js"></script>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sklearn_module</span> <span class="o">=</span> <span class="n">sklearn_module</span>
 
-<div class="viewcode-block" id="SkLearnLinearModel.fit"><a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnLinearModel.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<div class="viewcode-block" id="SkLearnLinearModel.fit">
+<a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnLinearModel.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            train_data</span>
 <span class="sd">                Train data to use</span>
@@ -302,25 +320,35 @@ src="/js/documentation_options.js"></script>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
             <span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="n">sklearn_trainer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sklearn_module</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="SkLearnLasso"><a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnLasso">[docs]</a><span class="k">class</span> <span class="nc">SkLearnLasso</span><span class="p">(</span><span class="n">SkLearnLinearModel</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SkLearnLasso">
+<a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnLasso">[docs]</a>
+<span class="k">class</span> <span class="nc">SkLearnLasso</span><span class="p">(</span><span class="n">SkLearnLinearModel</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Factory class. Trains a `LinearModel` model with</span>
 <span class="sd">        `sklearn.linear_model.Lasso`. You will need sklearn version &gt;= 0.23 to</span>
 <span class="sd">        support sample weights.</span>
 <span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">sklearn_module</span><span class="o">=</span><span class="s2">"linear_model.Lasso"</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SkLearnLasso.fit"><a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnLasso.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+<div class="viewcode-block" id="SkLearnLasso.fit">
+<a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnLasso.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="SkLearnRidge"><a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnRidge">[docs]</a><span class="k">class</span> <span class="nc">SkLearnRidge</span><span class="p">(</span><span class="n">SkLearnLinearModel</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SkLearnRidge">
+<a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnRidge">[docs]</a>
+<span class="k">class</span> <span class="nc">SkLearnRidge</span><span class="p">(</span><span class="n">SkLearnLinearModel</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Factory class. Trains a model with `sklearn.linear_model.Ridge`.</span>
 
 <span class="sd">        Any arguments provided to the sklearn constructor can be provided</span>
@@ -328,13 +356,19 @@ src="/js/documentation_options.js"></script>
 <span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">sklearn_module</span><span class="o">=</span><span class="s2">"linear_model.Ridge"</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SkLearnRidge.fit"><a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnRidge.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+<div class="viewcode-block" id="SkLearnRidge.fit">
+<a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnRidge.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="SkLearnLinearRegression"><a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnLinearRegression">[docs]</a><span class="k">class</span> <span class="nc">SkLearnLinearRegression</span><span class="p">(</span><span class="n">SkLearnLinearModel</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SkLearnLinearRegression">
+<a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnLinearRegression">[docs]</a>
+<span class="k">class</span> <span class="nc">SkLearnLinearRegression</span><span class="p">(</span><span class="n">SkLearnLinearModel</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Factory class. Trains a model with `sklearn.linear_model.LinearRegression`.</span>
 
 <span class="sd">        Any arguments provided to the sklearn constructor can be provided</span>
@@ -342,13 +376,17 @@ src="/js/documentation_options.js"></script>
 <span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">sklearn_module</span><span class="o">=</span><span class="s2">"linear_model.LinearRegression"</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SkLearnLinearRegression.fit"><a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnLinearRegression.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+<div class="viewcode-block" id="SkLearnLinearRegression.fit">
+<a class="viewcode-back" href="../../../../../utilities.html#captum._utils.models.linear_model.SkLearnLinearRegression.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
+
 
 
 <span class="k">class</span> <span class="nc">SkLearnLogisticRegression</span><span class="p">(</span><span class="n">SkLearnLinearModel</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Factory class. Trains a model with `sklearn.linear_model.LogisticRegression`.</span>
 
 <span class="sd">        Any arguments provided to the sklearn constructor can be provided</span>
@@ -362,7 +400,7 @@ src="/js/documentation_options.js"></script>
 
 <span class="k">class</span> <span class="nc">SkLearnSGDClassifier</span><span class="p">(</span><span class="n">SkLearnLinearModel</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Factory class. Trains a model with `sklearn.linear_model.SGDClassifier(`.</span>
 
 <span class="sd">        Any arguments provided to the sklearn constructor can be provided</span>
@@ -389,6 +427,8 @@ src="/js/documentation_options.js"></script>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../metrics.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../robust.html">Robustness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../concept.html">Concept-based Interpretability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../influence.html">Influential Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../module.html">Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../utilities.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../base_classes.html">Base Classes</a></li>
 </ul>
@@ -415,11 +455,11 @@ src="/js/documentation_options.js"></script>
 </form>
 </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 </div>
 </div>
 <div class="clearer"></div>
-</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2021 Facebook Inc.</section><script>
+</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2023 Facebook Inc.</section><script>
             (function() {
               var BAD_BASE = '/captum/';
               if (window.location.origin !== 'https://captum.ai') {

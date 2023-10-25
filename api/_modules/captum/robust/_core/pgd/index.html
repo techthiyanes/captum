@@ -6,7 +6,7 @@
 
               ga('create', 'UA-44373548-48', 'auto');
               ga('send', 'pageview');
-            </script><link rel="stylesheet" href="/css/code_block_buttons.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+            </script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
         document.addEventListener('DOMContentLoaded', function() {
           addBackToTop(
             {"zIndex":100}
@@ -14,37 +14,39 @@
         });
         </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/captum_logo.svg" alt="Captum"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/introduction" target="_self">Docs</a></li><li class=""><a href="/tutorials/" target="_self">Tutorials</a></li><li class=""><a href="/api/" target="_self">API Reference</a></li><li class=""><a href="https://github.com/pytorch/captum" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div>
 <script type="text/javascript" id="documentation_options" data-url_root="./"
-src="/js/documentation_options.js"></script>
-<script type="text/javascript" src="/js/jquery.js"></script>
-<script type="text/javascript" src="/js/underscore.js"></script>
-<script type="text/javascript" src="/js/doctools.js"></script>
-<script type="text/javascript" src="/js/language_data.js"></script>
-<script type="text/javascript" src="/js/searchtools.js"></script>
+src="/_sphinx/documentation_options.js"></script>
+<script type="text/javascript" src="/_sphinx/jquery.js"></script>
+<script type="text/javascript" src="/_sphinx/underscore.js"></script>
+<script type="text/javascript" src="/_sphinx/doctools.js"></script>
+<script type="text/javascript" src="/_sphinx/language_data.js"></script>
+<script type="text/javascript" src="/_sphinx/searchtools.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js"></script>
-<script src="/js/katex_autorenderer.js"></script>
+<script src="/_sphinx/katex_autorenderer.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css" />
-<link rel="stylesheet" type="text/css" href="/css/katex-math.css" />
 <div class="sphinx wrapper"><div class="document">
 <div class="documentwrapper">
 <div class="bodywrapper">
 <div class="body" role="main">
 <h1>Source code for captum.robust._core.pgd</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-<span class="kn">from</span> <span class="nn">captum._utils.common</span> <span class="kn">import</span> <span class="n">_format_input</span><span class="p">,</span> <span class="n">_format_output</span><span class="p">,</span> <span class="n">_is_tuple</span>
+<span class="kn">from</span> <span class="nn">captum._utils.common</span> <span class="kn">import</span> <span class="n">_format_output</span><span class="p">,</span> <span class="n">_format_tensor_into_tuples</span><span class="p">,</span> <span class="n">_is_tuple</span>
 <span class="kn">from</span> <span class="nn">captum._utils.typing</span> <span class="kn">import</span> <span class="n">TensorOrTupleOfTensorsGeneric</span>
+<span class="kn">from</span> <span class="nn">captum.log</span> <span class="kn">import</span> <span class="n">log_usage</span>
 <span class="kn">from</span> <span class="nn">captum.robust._core.fgsm</span> <span class="kn">import</span> <span class="n">FGSM</span>
 <span class="kn">from</span> <span class="nn">captum.robust._core.perturbation</span> <span class="kn">import</span> <span class="n">Perturbation</span>
 <span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span>
 
 
-<div class="viewcode-block" id="PGD"><a class="viewcode-back" href="../../../../robust.html#captum.robust.PGD">[docs]</a><span class="k">class</span> <span class="nc">PGD</span><span class="p">(</span><span class="n">Perturbation</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">"""</span>
+<div class="viewcode-block" id="PGD">
+<a class="viewcode-back" href="../../../../robust.html#captum.robust.PGD">[docs]</a>
+<span class="k">class</span> <span class="nc">PGD</span><span class="p">(</span><span class="n">Perturbation</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Projected Gradient Descent is an iterative version of the one-step attack</span>
 <span class="sd">    FGSM that can generate adversarial examples. It takes multiple gradient</span>
 <span class="sd">    steps to search for an adversarial perturbation within the desired</span>
@@ -64,8 +66,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">        x_(t+1) = Clip_r(x_t - alpha * sign(gradient of L(theta, x, t)))</span>
 
 <span class="sd">    More details on Projected Gradient Descent can be found in the original</span>
-<span class="sd">    paper:</span>
-<span class="sd">    https://arxiv.org/pdf/1706.06083.pdf</span>
+<span class="sd">    paper: https://arxiv.org/abs/1706.06083</span>
 <span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -75,17 +76,19 @@ src="/js/documentation_options.js"></script>
         <span class="n">lower_bound</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"-inf"</span><span class="p">),</span>
         <span class="n">upper_bound</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
-<span class="sd">            forward_func (callable): The pytorch model for which the attack is</span>
+<span class="sd">            forward_func (Callable): The pytorch model for which the attack is</span>
 <span class="sd">                        computed.</span>
-<span class="sd">            loss_func (callable, optional): Loss function of which the gradient</span>
+<span class="sd">            loss_func (Callable, optional): Loss function of which the gradient</span>
 <span class="sd">                        computed. The loss function should take in outputs of the</span>
 <span class="sd">                        model and labels, and return the loss for each input tensor.</span>
 <span class="sd">                        The default loss function is negative log.</span>
 <span class="sd">            lower_bound (float, optional): Lower bound of input values.</span>
+<span class="sd">                        Default: ``float("-inf")``</span>
 <span class="sd">            upper_bound (float, optional): Upper bound of input values.</span>
 <span class="sd">                        e.g. image pixels must be in the range 0-255</span>
+<span class="sd">                        Default: ``float("inf")``</span>
 
 <span class="sd">        Attributes:</span>
 <span class="sd">            bound (Callable): A function that bounds the input values based on</span>
@@ -97,7 +100,10 @@ src="/js/documentation_options.js"></script>
         <span class="bp">self</span><span class="o">.</span><span class="n">fgsm</span> <span class="o">=</span> <span class="n">FGSM</span><span class="p">(</span><span class="n">forward_func</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bound</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">lower_bound</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">upper_bound</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PGD.perturb"><a class="viewcode-back" href="../../../../robust.html#captum.robust.PGD.perturb">[docs]</a>    <span class="k">def</span> <span class="nf">perturb</span><span class="p">(</span>
+<div class="viewcode-block" id="PGD.perturb">
+<a class="viewcode-back" href="../../../../robust.html#captum.robust.PGD.perturb">[docs]</a>
+    <span class="nd">@log_usage</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">perturb</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">inputs</span><span class="p">:</span> <span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">,</span>
         <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -108,24 +114,25 @@ src="/js/documentation_options.js"></script>
         <span class="n">targeted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">random_start</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">norm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Linf"</span><span class="p">,</span>
+        <span class="n">mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        This method computes and returns the perturbed input for each input tensor.</span>
 <span class="sd">        It supports both targeted and non-targeted attacks.</span>
 
 <span class="sd">        Args:</span>
 
-<span class="sd">            inputs (tensor or tuple of tensors): Input for which adversarial</span>
+<span class="sd">            inputs (Tensor or tuple[Tensor, ...]): Input for which adversarial</span>
 <span class="sd">                        attack is computed. It can be provided as a single</span>
 <span class="sd">                        tensor or a tuple of multiple tensors. If multiple</span>
 <span class="sd">                        input tensors are provided, the batch sizes must be</span>
-<span class="sd">                        aligned accross all tensors.</span>
+<span class="sd">                        aligned across all tensors.</span>
 <span class="sd">            radius (float): Radius of the neighbor ball centered around inputs.</span>
 <span class="sd">                        The perturbation should be within this range.</span>
 <span class="sd">            step_size (float): Step size of each gradient step.</span>
 <span class="sd">            step_num (int): Step numbers. It usually guarantees that the perturbation</span>
 <span class="sd">                        can reach the border.</span>
-<span class="sd">            target (any): True labels of inputs if non-targeted attack is</span>
+<span class="sd">            target (Any): True labels of inputs if non-targeted attack is</span>
 <span class="sd">                        desired. Target class of inputs if targeted attack</span>
 <span class="sd">                        is desired. Target will be passed to the loss function</span>
 <span class="sd">                        to compute loss, so the type needs to match the</span>
@@ -151,23 +158,29 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                          examples in inputs (dim 0), and each tuple containing</span>
 <span class="sd">                          #output_dims - 1 elements. Each tuple is applied as the</span>
 <span class="sd">                          label for the corresponding example.</span>
-<span class="sd">            additional_forward_args (any, optional): If the forward function</span>
+<span class="sd">            additional_forward_args (Any, optional): If the forward function</span>
 <span class="sd">                        requires additional arguments other than the inputs for</span>
 <span class="sd">                        which attributions should not be computed, this argument</span>
 <span class="sd">                        can be provided. These arguments are provided to</span>
 <span class="sd">                        forward_func in order following the arguments in inputs.</span>
-<span class="sd">                        Default: None.</span>
+<span class="sd">                        Default: ``None``</span>
 <span class="sd">            targeted (bool, optional): If attack should be targeted.</span>
-<span class="sd">                        Default: False.</span>
+<span class="sd">                        Default: ``False``</span>
 <span class="sd">            random_start (bool, optional): If a random initialization is added to</span>
-<span class="sd">                        inputs. Default: False.</span>
+<span class="sd">                        inputs. Default: ``False``</span>
 <span class="sd">            norm (str, optional): Specifies the norm to calculate distance from</span>
-<span class="sd">                        original inputs: 'Linf'|'L2'.</span>
-<span class="sd">                        Default: 'Linf'.</span>
+<span class="sd">                        original inputs: ``Linf`` | ``L2``.</span>
+<span class="sd">                        Default: ``Linf``</span>
+<span class="sd">            mask (Tensor or tuple[Tensor, ...], optional): mask of zeroes and ones</span>
+<span class="sd">                        that defines which elements within the input tensor(s) are</span>
+<span class="sd">                        perturbed. This mask must have the same shape and</span>
+<span class="sd">                        dimensionality as the inputs. If this argument is not</span>
+<span class="sd">                        provided, all elements are perturbed.</span>
+<span class="sd">                        Default: None.</span>
 
 <span class="sd">        Returns:</span>
 
-<span class="sd">            - **perturbed inputs** (*tensor* or tuple of *tensors*):</span>
+<span class="sd">            - **perturbed inputs** (*Tensor* or *tuple[Tensor, ...]*):</span>
 <span class="sd">                        Perturbed input for each</span>
 <span class="sd">                        input tensor. The perturbed inputs have the same shape and</span>
 <span class="sd">                        dimensionality as the inputs.</span>
@@ -186,16 +199,30 @@ src="/js/documentation_options.js"></script>
                 <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">"Norm constraint must be L2 or Linf."</span><span class="p">)</span>
 
         <span class="n">is_inputs_tuple</span> <span class="o">=</span> <span class="n">_is_tuple</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-        <span class="n">formatted_inputs</span> <span class="o">=</span> <span class="n">_format_input</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">formatted_inputs</span> <span class="o">=</span> <span class="n">_format_tensor_into_tuples</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">formatted_masks</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">_format_tensor_into_tuples</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">else</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">formatted_inputs</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">perturbed_inputs</span> <span class="o">=</span> <span class="n">formatted_inputs</span>
         <span class="k">if</span> <span class="n">random_start</span><span class="p">:</span>
             <span class="n">perturbed_inputs</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">bound</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_random_point</span><span class="p">(</span><span class="n">formatted_inputs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">radius</span><span class="p">,</span> <span class="n">norm</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bound</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_random_point</span><span class="p">(</span>
+                        <span class="n">formatted_inputs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">radius</span><span class="p">,</span> <span class="n">norm</span><span class="p">,</span> <span class="n">formatted_masks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">formatted_inputs</span><span class="p">))</span>
             <span class="p">)</span>
         <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">step_num</span><span class="p">):</span>
             <span class="n">perturbed_inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fgsm</span><span class="o">.</span><span class="n">perturb</span><span class="p">(</span>
-                <span class="n">perturbed_inputs</span><span class="p">,</span> <span class="n">step_size</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">additional_forward_args</span><span class="p">,</span> <span class="n">targeted</span>
+                <span class="n">perturbed_inputs</span><span class="p">,</span>
+                <span class="n">step_size</span><span class="p">,</span>
+                <span class="n">target</span><span class="p">,</span>
+                <span class="n">additional_forward_args</span><span class="p">,</span>
+                <span class="n">targeted</span><span class="p">,</span>
+                <span class="n">formatted_masks</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">perturbed_inputs</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
                 <span class="n">_clip</span><span class="p">(</span><span class="n">formatted_inputs</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">perturbed_inputs</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
@@ -208,8 +235,11 @@ src="/js/documentation_options.js"></script>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">_format_output</span><span class="p">(</span><span class="n">is_inputs_tuple</span><span class="p">,</span> <span class="n">perturbed_inputs</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_random_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">norm</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+
+    <span class="k">def</span> <span class="nf">_random_point</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">norm</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        A helper function that returns a uniform random point within the ball</span>
 <span class="sd">        with the given center and radius. Norm should be either L2 or Linf.</span>
 <span class="sd">        """</span>
@@ -220,12 +250,13 @@ src="/js/documentation_options.js"></script>
             <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">d</span><span class="p">))</span> <span class="o">*</span> <span class="n">radius</span>
             <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="p">[(</span><span class="o">...</span><span class="p">,)</span> <span class="o">+</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span> <span class="o">*</span> <span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">unit_u</span>
-            <span class="k">return</span> <span class="n">center</span> <span class="o">+</span> <span class="n">x</span>
+            <span class="k">return</span> <span class="n">center</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">mask</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">norm</span> <span class="o">==</span> <span class="s2">"Linf"</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand_like</span><span class="p">(</span><span class="n">center</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">radius</span>
-            <span class="k">return</span> <span class="n">center</span> <span class="o">+</span> <span class="n">x</span>
+            <span class="k">return</span> <span class="n">center</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">mask</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">"Norm constraint must be L2 or Linf."</span><span class="p">)</span></div>
+
 </pre></div>
 </div>
 </div>
@@ -243,6 +274,8 @@ src="/js/documentation_options.js"></script>
 <li class="toctree-l1"><a class="reference internal" href="../../../../metrics.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../robust.html">Robustness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../concept.html">Concept-based Interpretability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../influence.html">Influential Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module.html">Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utilities.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../base_classes.html">Base Classes</a></li>
 </ul>
@@ -269,11 +302,11 @@ src="/js/documentation_options.js"></script>
 </form>
 </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 </div>
 </div>
 <div class="clearer"></div>
-</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2021 Facebook Inc.</section><script>
+</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2023 Facebook Inc.</section><script>
             (function() {
               var BAD_BASE = '/captum/';
               if (window.location.origin !== 'https://captum.ai') {

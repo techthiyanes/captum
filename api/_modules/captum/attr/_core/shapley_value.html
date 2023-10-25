@@ -6,7 +6,7 @@
 
               ga('create', 'UA-44373548-48', 'auto');
               ga('send', 'pageview');
-            </script><link rel="stylesheet" href="/css/code_block_buttons.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+            </script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/code_block_buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
         document.addEventListener('DOMContentLoaded', function() {
           addBackToTop(
             {"zIndex":100}
@@ -14,18 +14,17 @@
         });
         </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/captum_logo.svg" alt="Captum"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/introduction" target="_self">Docs</a></li><li class=""><a href="/tutorials/" target="_self">Tutorials</a></li><li class=""><a href="/api/" target="_self">API Reference</a></li><li class=""><a href="https://github.com/pytorch/captum" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div>
 <script type="text/javascript" id="documentation_options" data-url_root="./"
-src="/js/documentation_options.js"></script>
-<script type="text/javascript" src="/js/jquery.js"></script>
-<script type="text/javascript" src="/js/underscore.js"></script>
-<script type="text/javascript" src="/js/doctools.js"></script>
-<script type="text/javascript" src="/js/language_data.js"></script>
-<script type="text/javascript" src="/js/searchtools.js"></script>
+src="/_sphinx/documentation_options.js"></script>
+<script type="text/javascript" src="/_sphinx/jquery.js"></script>
+<script type="text/javascript" src="/_sphinx/underscore.js"></script>
+<script type="text/javascript" src="/_sphinx/doctools.js"></script>
+<script type="text/javascript" src="/_sphinx/language_data.js"></script>
+<script type="text/javascript" src="/_sphinx/searchtools.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js"></script>
-<script src="/js/katex_autorenderer.js"></script>
+<script src="/_sphinx/katex_autorenderer.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css" />
-<link rel="stylesheet" type="text/css" href="/css/katex-math.css" />
 <div class="sphinx wrapper"><div class="document">
 <div class="documentwrapper">
 <div class="bodywrapper">
@@ -43,8 +42,10 @@ src="/js/documentation_options.js"></script>
     <span class="n">_expand_additional_forward_args</span><span class="p">,</span>
     <span class="n">_expand_target</span><span class="p">,</span>
     <span class="n">_format_additional_forward_args</span><span class="p">,</span>
-    <span class="n">_format_input</span><span class="p">,</span>
+    <span class="n">_format_feature_mask</span><span class="p">,</span>
     <span class="n">_format_output</span><span class="p">,</span>
+    <span class="n">_format_tensor_into_tuples</span><span class="p">,</span>
+    <span class="n">_get_max_feature_index</span><span class="p">,</span>
     <span class="n">_is_tuple</span><span class="p">,</span>
     <span class="n">_run_forward</span><span class="p">,</span>
 <span class="p">)</span>
@@ -52,7 +53,6 @@ src="/js/documentation_options.js"></script>
 <span class="kn">from</span> <span class="nn">captum._utils.typing</span> <span class="kn">import</span> <span class="n">BaselineType</span><span class="p">,</span> <span class="n">TargetType</span><span class="p">,</span> <span class="n">TensorOrTupleOfTensorsGeneric</span>
 <span class="kn">from</span> <span class="nn">captum.attr._utils.attribution</span> <span class="kn">import</span> <span class="n">PerturbationAttribution</span>
 <span class="kn">from</span> <span class="nn">captum.attr._utils.common</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">_construct_default_feature_mask</span><span class="p">,</span>
     <span class="n">_find_output_mode_and_verify</span><span class="p">,</span>
     <span class="n">_format_input_baseline</span><span class="p">,</span>
     <span class="n">_tensorize_baseline</span><span class="p">,</span>
@@ -71,8 +71,10 @@ src="/js/documentation_options.js"></script>
         <span class="k">yield</span> <span class="n">torch</span><span class="o">.</span><span class="n">randperm</span><span class="p">(</span><span class="n">num_features</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="ShapleyValueSampling"><a class="viewcode-back" href="../../../../shapley_value_sampling.html#captum.attr.ShapleyValueSampling">[docs]</a><span class="k">class</span> <span class="nc">ShapleyValueSampling</span><span class="p">(</span><span class="n">PerturbationAttribution</span><span class="p">):</span>
-    <span class="sd">"""</span>
+<div class="viewcode-block" id="ShapleyValueSampling">
+<a class="viewcode-back" href="../../../../shapley_value_sampling.html#captum.attr.ShapleyValueSampling">[docs]</a>
+<span class="k">class</span> <span class="nc">ShapleyValueSampling</span><span class="p">(</span><span class="n">PerturbationAttribution</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    A perturbation based approach to compute attribution, based on the concept</span>
 <span class="sd">    of Shapley Values from cooperative game theory. This method involves taking</span>
 <span class="sd">    a random permutation of the input features and adding them one-by-one to the</span>
@@ -96,10 +98,10 @@ src="/js/documentation_options.js"></script>
 <span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forward_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 
-<span class="sd">            forward_func (callable): The forward function of the model or</span>
+<span class="sd">            forward_func (Callable): The forward function of the model or</span>
 <span class="sd">                        any modification of it. The forward function can either</span>
 <span class="sd">                        return a scalar per example, or a single scalar for the</span>
 <span class="sd">                        full batch. If a single scalar is returned for the batch,</span>
@@ -110,7 +112,9 @@ src="/js/documentation_options.js"></script>
         <span class="n">PerturbationAttribution</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forward_func</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">permutation_generator</span> <span class="o">=</span> <span class="n">_perm_generator</span>
 
-<div class="viewcode-block" id="ShapleyValueSampling.attribute"><a class="viewcode-back" href="../../../../shapley_value_sampling.html#captum.attr.ShapleyValueSampling.attribute">[docs]</a>    <span class="nd">@log_usage</span><span class="p">()</span>
+<div class="viewcode-block" id="ShapleyValueSampling.attribute">
+<a class="viewcode-back" href="../../../../shapley_value_sampling.html#captum.attr.ShapleyValueSampling.attribute">[docs]</a>
+    <span class="nd">@log_usage</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">attribute</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">inputs</span><span class="p">:</span> <span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">,</span>
@@ -122,14 +126,14 @@ src="/js/documentation_options.js"></script>
         <span class="n">perturbations_per_eval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">show_progress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        NOTE: The feature_mask argument differs from other perturbation based</span>
 <span class="sd">        methods, since feature indices can overlap across tensors. See the</span>
 <span class="sd">        description of the feature_mask argument below for more details.</span>
 
 <span class="sd">        Args:</span>
 
-<span class="sd">                inputs (tensor or tuple of tensors):  Input for which Shapley value</span>
+<span class="sd">                inputs (Tensor or tuple[Tensor, ...]): Input for which Shapley value</span>
 <span class="sd">                            sampling attributions are computed. If forward_func takes</span>
 <span class="sd">                            a single tensor as input, a single input tensor should</span>
 <span class="sd">                            be provided.</span>
@@ -139,7 +143,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                            to the number of examples (aka batch size), and if</span>
 <span class="sd">                            multiple input tensors are provided, the examples must</span>
 <span class="sd">                            be aligned appropriately.</span>
-<span class="sd">                baselines (scalar, tensor, tuple of scalars or tensors, optional):</span>
+<span class="sd">                baselines (scalar, Tensor, tuple of scalar, or Tensor, optional):</span>
 <span class="sd">                            Baselines define reference value which replaces each</span>
 <span class="sd">                            feature when ablated.</span>
 <span class="sd">                            Baselines can be provided as:</span>
@@ -164,10 +168,11 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                              - or a scalar, corresponding to a tensor in the</span>
 <span class="sd">                                inputs' tuple. This scalar value is broadcasted</span>
 <span class="sd">                                for corresponding input tensor.</span>
+
 <span class="sd">                            In the cases when `baselines` is not provided, we internally</span>
 <span class="sd">                            use zero scalar corresponding to each input tensor.</span>
 <span class="sd">                            Default: None</span>
-<span class="sd">                target (int, tuple, tensor or list, optional):  Output indices for</span>
+<span class="sd">                target (int, tuple, Tensor, or list, optional): Output indices for</span>
 <span class="sd">                            which difference is computed (for classification cases,</span>
 <span class="sd">                            this is usually the target class).</span>
 <span class="sd">                            If the network returns a scalar value per example,</span>
@@ -192,7 +197,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                              target for the corresponding example.</span>
 
 <span class="sd">                            Default: None</span>
-<span class="sd">                additional_forward_args (any, optional): If the forward function</span>
+<span class="sd">                additional_forward_args (Any, optional): If the forward function</span>
 <span class="sd">                            requires additional arguments other than the inputs for</span>
 <span class="sd">                            which attributions should not be computed, this argument</span>
 <span class="sd">                            can be provided. It must be either a single additional</span>
@@ -207,7 +212,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                            Note that attributions are not computed with respect</span>
 <span class="sd">                            to these arguments.</span>
 <span class="sd">                            Default: None</span>
-<span class="sd">                feature_mask (tensor or tuple of tensors, optional):</span>
+<span class="sd">                feature_mask (Tensor or tuple[Tensor, ...], optional):</span>
 <span class="sd">                            feature_mask defines a mask for the input, grouping</span>
 <span class="sd">                            features which should be added together. feature_mask</span>
 <span class="sd">                            should contain the same number of tensors as inputs.</span>
@@ -229,7 +234,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                            If None, then a feature mask is constructed which assigns</span>
 <span class="sd">                            each scalar within a tensor as a separate feature</span>
 <span class="sd">                            Default: None</span>
-<span class="sd">                n_samples (int, optional):  The number of feature permutations</span>
+<span class="sd">                n_samples (int, optional): The number of feature permutations</span>
 <span class="sd">                            tested.</span>
 <span class="sd">                            Default: `25` if `n_samples` is not provided.</span>
 <span class="sd">                perturbations_per_eval (int, optional): Allows multiple ablations</span>
@@ -251,8 +256,8 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                            Default: False</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">                *tensor* or tuple of *tensors* of **attributions**:</span>
-<span class="sd">                - **attributions** (*tensor* or tuple of *tensors*):</span>
+<span class="sd">                *Tensor* or *tuple[Tensor, ...]* of **attributions**:</span>
+<span class="sd">                - **attributions** (*Tensor* or *tuple[Tensor, ...]*):</span>
 <span class="sd">                            The attributions with respect to each input feature.</span>
 <span class="sd">                            If the forward function returns</span>
 <span class="sd">                            a scalar value per example, attributions will be</span>
@@ -309,7 +314,8 @@ src="/js/documentation_options.js"></script>
         <span class="n">additional_forward_args</span> <span class="o">=</span> <span class="n">_format_additional_forward_args</span><span class="p">(</span>
             <span class="n">additional_forward_args</span>
         <span class="p">)</span>
-        <span class="n">feature_mask</span> <span class="o">=</span> <span class="n">_format_input</span><span class="p">(</span><span class="n">feature_mask</span><span class="p">)</span> <span class="k">if</span> <span class="n">feature_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">feature_mask</span> <span class="o">=</span> <span class="n">_format_feature_mask</span><span class="p">(</span><span class="n">feature_mask</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+
         <span class="k">assert</span> <span class="p">(</span>
             <span class="nb">isinstance</span><span class="p">(</span><span class="n">perturbations_per_eval</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">perturbations_per_eval</span> <span class="o">&gt;=</span> <span class="mi">1</span>
         <span class="p">),</span> <span class="s2">"Ablations per evaluation must be at least 1."</span>
@@ -318,13 +324,7 @@ src="/js/documentation_options.js"></script>
             <span class="n">baselines</span> <span class="o">=</span> <span class="n">_tensorize_baseline</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">baselines</span><span class="p">)</span>
             <span class="n">num_examples</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">feature_mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">feature_mask</span><span class="p">,</span> <span class="n">total_features</span> <span class="o">=</span> <span class="n">_construct_default_feature_mask</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">total_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-                    <span class="nb">max</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">single_mask</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="k">for</span> <span class="n">single_mask</span> <span class="ow">in</span> <span class="n">feature_mask</span><span class="p">)</span>
-                    <span class="o">+</span> <span class="mi">1</span>
-                <span class="p">)</span>
+            <span class="n">total_features</span> <span class="o">=</span> <span class="n">_get_max_feature_index</span><span class="p">(</span><span class="n">feature_mask</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
             <span class="k">if</span> <span class="n">show_progress</span><span class="p">:</span>
                 <span class="n">attr_progress</span> <span class="o">=</span> <span class="n">progress</span><span class="p">(</span>
@@ -427,6 +427,7 @@ src="/js/documentation_options.js"></script>
             <span class="n">formatted_attr</span> <span class="o">=</span> <span class="n">_format_output</span><span class="p">(</span><span class="n">is_inputs_tuple</span><span class="p">,</span> <span class="n">attrib</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">formatted_attr</span></div>
 
+
     <span class="k">def</span> <span class="nf">_perturbation_generator</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">inputs</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
@@ -437,7 +438,7 @@ src="/js/documentation_options.js"></script>
         <span class="n">feature_permutation</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
         <span class="n">perturbations_per_eval</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TargetType</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">]]]:</span>
-        <span class="sd">"""</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This method is a generator which yields each perturbation to be evaluated</span>
 <span class="sd">        including inputs, additional_forward_args, targets, and mask.</span>
 <span class="sd">        """</span>
@@ -509,12 +510,15 @@ src="/js/documentation_options.js"></script>
             <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_n_evaluations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_features</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">perturbations_per_eval</span><span class="p">):</span>
-        <span class="sd">"""return the total number of forward evaluations needed"""</span>
+<span class="w">        </span><span class="sd">"""return the total number of forward evaluations needed"""</span>
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">total_features</span> <span class="o">/</span> <span class="n">perturbations_per_eval</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_samples</span></div>
 
 
-<div class="viewcode-block" id="ShapleyValues"><a class="viewcode-back" href="../../../../shapley_value_sampling.html#captum.attr.ShapleyValues">[docs]</a><span class="k">class</span> <span class="nc">ShapleyValues</span><span class="p">(</span><span class="n">ShapleyValueSampling</span><span class="p">):</span>
-    <span class="sd">"""</span>
+
+<div class="viewcode-block" id="ShapleyValues">
+<a class="viewcode-back" href="../../../../shapley_value_sampling.html#captum.attr.ShapleyValues">[docs]</a>
+<span class="k">class</span> <span class="nc">ShapleyValues</span><span class="p">(</span><span class="n">ShapleyValueSampling</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    A perturbation based approach to compute attribution, based on the concept</span>
 <span class="sd">    of Shapley Values from cooperative game theory. This method involves taking</span>
 <span class="sd">    each permutation of the input features and adding them one-by-one to the</span>
@@ -545,10 +549,10 @@ src="/js/documentation_options.js"></script>
 <span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forward_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 
-<span class="sd">            forward_func (callable): The forward function of the model or</span>
+<span class="sd">            forward_func (Callable): The forward function of the model or</span>
 <span class="sd">                        any modification of it. The forward function can either</span>
 <span class="sd">                        return a scalar per example, or a single scalar for the</span>
 <span class="sd">                        full batch. If a single scalar is returned for the batch,</span>
@@ -559,7 +563,9 @@ src="/js/documentation_options.js"></script>
         <span class="n">ShapleyValueSampling</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forward_func</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">permutation_generator</span> <span class="o">=</span> <span class="n">_all_perm_generator</span>
 
-<div class="viewcode-block" id="ShapleyValues.attribute"><a class="viewcode-back" href="../../../../shapley_value_sampling.html#captum.attr.ShapleyValues.attribute">[docs]</a>    <span class="nd">@log_usage</span><span class="p">()</span>
+<div class="viewcode-block" id="ShapleyValues.attribute">
+<a class="viewcode-back" href="../../../../shapley_value_sampling.html#captum.attr.ShapleyValues.attribute">[docs]</a>
+    <span class="nd">@log_usage</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">attribute</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">inputs</span><span class="p">:</span> <span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">,</span>
@@ -570,14 +576,14 @@ src="/js/documentation_options.js"></script>
         <span class="n">perturbations_per_eval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">show_progress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorOrTupleOfTensorsGeneric</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">"""</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        NOTE: The feature_mask argument differs from other perturbation based</span>
 <span class="sd">        methods, since feature indices can overlap across tensors. See the</span>
 <span class="sd">        description of the feature_mask argument below for more details.</span>
 
 <span class="sd">        Args:</span>
 
-<span class="sd">                inputs (tensor or tuple of tensors):  Input for which Shapley value</span>
+<span class="sd">                inputs (Tensor or tuple[Tensor, ...]): Input for which Shapley value</span>
 <span class="sd">                            sampling attributions are computed. If forward_func takes</span>
 <span class="sd">                            a single tensor as input, a single input tensor should</span>
 <span class="sd">                            be provided.</span>
@@ -587,7 +593,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                            to the number of examples (aka batch size), and if</span>
 <span class="sd">                            multiple input tensors are provided, the examples must</span>
 <span class="sd">                            be aligned appropriately.</span>
-<span class="sd">                baselines (scalar, tensor, tuple of scalars or tensors, optional):</span>
+<span class="sd">                baselines (scalar, Tensor, tuple of scalar, or Tensor, optional):</span>
 <span class="sd">                            Baselines define reference value which replaces each</span>
 <span class="sd">                            feature when ablated.</span>
 <span class="sd">                            Baselines can be provided as:</span>
@@ -612,10 +618,11 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                              - or a scalar, corresponding to a tensor in the</span>
 <span class="sd">                                inputs' tuple. This scalar value is broadcasted</span>
 <span class="sd">                                for corresponding input tensor.</span>
+
 <span class="sd">                            In the cases when `baselines` is not provided, we internally</span>
 <span class="sd">                            use zero scalar corresponding to each input tensor.</span>
 <span class="sd">                            Default: None</span>
-<span class="sd">                target (int, tuple, tensor or list, optional):  Output indices for</span>
+<span class="sd">                target (int, tuple, Tensor, or list, optional): Output indices for</span>
 <span class="sd">                            which difference is computed (for classification cases,</span>
 <span class="sd">                            this is usually the target class).</span>
 <span class="sd">                            If the network returns a scalar value per example,</span>
@@ -640,7 +647,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                              target for the corresponding example.</span>
 
 <span class="sd">                            Default: None</span>
-<span class="sd">                additional_forward_args (any, optional): If the forward function</span>
+<span class="sd">                additional_forward_args (Any, optional): If the forward function</span>
 <span class="sd">                            requires additional arguments other than the inputs for</span>
 <span class="sd">                            which attributions should not be computed, this argument</span>
 <span class="sd">                            can be provided. It must be either a single additional</span>
@@ -655,7 +662,7 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                            Note that attributions are not computed with respect</span>
 <span class="sd">                            to these arguments.</span>
 <span class="sd">                            Default: None</span>
-<span class="sd">                feature_mask (tensor or tuple of tensors, optional):</span>
+<span class="sd">                feature_mask (Tensor or tuple[Tensor, ...], optional):</span>
 <span class="sd">                            feature_mask defines a mask for the input, grouping</span>
 <span class="sd">                            features which should be added together. feature_mask</span>
 <span class="sd">                            should contain the same number of tensors as inputs.</span>
@@ -695,8 +702,8 @@ src="/js/documentation_options.js"></script>
 <span class="sd">                            a simple output of progress.</span>
 <span class="sd">                            Default: False</span>
 <span class="sd">        Returns:</span>
-<span class="sd">                *tensor* or tuple of *tensors* of **attributions**:</span>
-<span class="sd">                - **attributions** (*tensor* or tuple of *tensors*):</span>
+<span class="sd">                *Tensor* or *tuple[Tensor, ...]* of **attributions**:</span>
+<span class="sd">                - **attributions** (*Tensor* or *tuple[Tensor, ...]*):</span>
 <span class="sd">                            The attributions with respect to each input feature.</span>
 <span class="sd">                            If the forward function returns</span>
 <span class="sd">                            a scalar value per example, attributions will be</span>
@@ -745,7 +752,9 @@ src="/js/documentation_options.js"></script>
 <span class="sd">            &gt;&gt;&gt; attr = sv.attribute(input, target=1, feature_mask=feature_mask)</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="n">feature_mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">total_features</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">numel</span><span class="p">(</span><span class="n">inp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">_format_input</span><span class="p">(</span><span class="n">inputs</span><span class="p">))</span>
+            <span class="n">total_features</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">numel</span><span class="p">(</span><span class="n">inp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">_format_tensor_into_tuples</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">total_features</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">single_mask</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="k">for</span> <span class="n">single_mask</span> <span class="ow">in</span> <span class="n">feature_mask</span><span class="p">))</span>
@@ -770,11 +779,13 @@ src="/js/documentation_options.js"></script>
             <span class="n">show_progress</span><span class="o">=</span><span class="n">show_progress</span><span class="p">,</span>
         <span class="p">)</span></div>
 
+
     <span class="k">def</span> <span class="nf">_get_n_evaluations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_features</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">perturbations_per_eval</span><span class="p">):</span>
-        <span class="sd">"""return the total number of forward evaluations needed"""</span>
+<span class="w">        </span><span class="sd">"""return the total number of forward evaluations needed"""</span>
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">total_features</span> <span class="o">/</span> <span class="n">perturbations_per_eval</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span>
             <span class="n">total_features</span>
         <span class="p">)</span></div>
+
 </pre></div>
 </div>
 </div>
@@ -792,6 +803,8 @@ src="/js/documentation_options.js"></script>
 <li class="toctree-l1"><a class="reference internal" href="../../../../metrics.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../robust.html">Robustness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../concept.html">Concept-based Interpretability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../influence.html">Influential Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module.html">Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utilities.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../base_classes.html">Base Classes</a></li>
 </ul>
@@ -818,11 +831,11 @@ src="/js/documentation_options.js"></script>
 </form>
 </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 </div>
 </div>
 <div class="clearer"></div>
-</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2021 Facebook Inc.</section><script>
+</div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Docs</h5><a href="/docs/introduction">Introduction</a><a href="/docs/getting_started">Getting Started</a><a href="/tutorials/">Tutorials</a><a href="/api/">API Reference</a></div><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div><div class="footerSection"><h5>Social</h5><div class="social"><a class="github-button" href="https://github.com/pytorch/captum" data-count-href="https://github.com/pytorch/captum/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star Captum on GitHub">captum</a></div></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright"> Copyright © 2023 Facebook Inc.</section><script>
             (function() {
               var BAD_BASE = '/captum/';
               if (window.location.origin !== 'https://captum.ai') {
